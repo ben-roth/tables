@@ -12,7 +12,7 @@ A customizable, printable wedding guest directory with table assignments.
 
 ## Live Demo
 
-Visit the live version: [https://benroth.github.io/tables/](https://benroth.github.io/tables/)
+Visit the live version: [https://ben-roth.github.io/tables/](https://ben-roth.github.io/tables/)
 
 ## Usage
 
