@@ -1,0 +1,1416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wedding Guest Directory</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300..700;1,300..700&display=swap" rel="stylesheet">
+    <link id="google-font-link" href="" rel="stylesheet">
+    <!-- Load all fonts for preview -->
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300..700;1,300..700&family=Birthstone&family=Whisper&family=Great+Vibes&family=Caramel&family=MonteCarlo&family=Meie+Script&family=Meow+Script&family=Marck+Script&family=Mr+De+Haviland&family=Explora&family=Bilbo+Swash+Caps&family=Forum&family=Cinzel:wght@400;600&family=Gelasio:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Source+Sans+3:ital,wght@0,200..900;1,200..900&family=Cantarell:ital,wght@0,400;0,700;1,400;1,700&family=Merriweather+Sans:ital,wght@0,300..800;1,300..800&family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Amethysta&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Cormorant Garamond', serif;
+            margin: 20px;
+            background-color: #ffffff;
+            line-height: 1.4;
+        }
+        
+        /* Control Panel Styles */
+        .control-panel {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 320px;
+            background: white;
+            border: 2px solid #5b3b34;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            z-index: 1000;
+            max-height: 80vh;
+            overflow-y: auto;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-size: 14px;
+        }
+        
+        .control-panel h3 {
+            margin: 0 0 15px 0;
+            color: #5b3b34;
+            font-size: 18px;
+            text-align: center;
+        }
+        
+        .control-group {
+            margin-bottom: 15px;
+        }
+        
+        .control-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: #5b3b34;
+        }
+        
+        .control-group select,
+        .control-group input[type="range"] {
+            width: 100%;
+            margin-bottom: 5px;
+        }
+        
+        .control-group select {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background: white;
+            font-size: 16px;
+        }
+        
+        /* Custom Font Selector */
+        .font-selector {
+            position: relative;
+            width: 100%;
+        }
+        
+        .font-current {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background: white;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 16px;
+        }
+        
+        .font-current:hover {
+            border-color: #8B4513;
+        }
+        
+        .font-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border: 1px solid #ccc;
+            border-top: none;
+            border-radius: 0 0 4px 4px;
+            max-height: 200px;
+            overflow-y: auto;
+            z-index: 1002;
+            display: none;
+        }
+        
+        .font-option {
+            padding: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.2s;
+        }
+        
+        .font-option:hover {
+            background-color: #f0f0f0;
+        }
+        
+        .font-option.selected {
+            background-color: #8B4513;
+            color: white;
+        }
+        
+        /* Font styles for custom dropdown */
+        .font-cormorant { font-family: 'Cormorant Garamond', serif; }
+        .font-birthstone { font-family: 'Birthstone', cursive; }
+        .font-whisper { font-family: 'Whisper', cursive; }
+        .font-great-vibes { font-family: 'Great Vibes', cursive; }
+        .font-caramel { font-family: 'Caramel', cursive; }
+        .font-montecarlo { font-family: 'MonteCarlo', cursive; }
+        .font-meie-script { font-family: 'Meie Script', cursive; }
+        .font-meow-script { font-family: 'Meow Script', cursive; }
+        .font-marck-script { font-family: 'Marck Script', cursive; }
+        .font-mr-de-haviland { font-family: 'Mr De Haviland', cursive; }
+        .font-explora { font-family: 'Explora', cursive; }
+        .font-bilbo-swash { font-family: 'Bilbo Swash Caps', cursive; }
+        .font-forum { font-family: 'Forum', cursive; }
+        .font-cinzel { font-family: 'Cinzel', serif; }
+        .font-gelasio { font-family: 'Gelasio', serif; }
+        .font-playfair { font-family: 'Playfair Display', serif; }
+        .font-lato { font-family: 'Lato', sans-serif; }
+        .font-source-sans { font-family: 'Source Sans 3', sans-serif; }
+        .font-cantarell { font-family: 'Cantarell', sans-serif; }
+        .font-merriweather-sans { font-family: 'Merriweather Sans', sans-serif; }
+        .font-eb-garamond { font-family: 'EB Garamond', serif; }
+        .font-amethysta { font-family: 'Amethysta', serif; }
+        
+        /* Checkbox styles */
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+        
+        .checkbox-group input[type="checkbox"] {
+            width: auto;
+            margin: 0;
+        }
+        
+        .checkbox-group label {
+            margin: 0;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        
+        /* Font preview styles */
+        #fontSelect option[value="Cormorant Garamond"] { font-family: 'Cormorant Garamond', serif; }
+        #fontSelect option[value="Birthstone"] { font-family: 'Birthstone', cursive; }
+        #fontSelect option[value="Whisper"] { font-family: 'Whisper', cursive; }
+        #fontSelect option[value="Great Vibes"] { font-family: 'Great Vibes', cursive; }
+        #fontSelect option[value="Caramel"] { font-family: 'Caramel', cursive; }
+        #fontSelect option[value="MonteCarlo"] { font-family: 'MonteCarlo', cursive; }
+        #fontSelect option[value="Meie Script"] { font-family: 'Meie Script', cursive; }
+        #fontSelect option[value="Meow Script"] { font-family: 'Meow Script', cursive; }
+        #fontSelect option[value="Marck Script"] { font-family: 'Marck Script', cursive; }
+        #fontSelect option[value="Mr De Haviland"] { font-family: 'Mr De Haviland', cursive; }
+        #fontSelect option[value="Explora"] { font-family: 'Explora', cursive; }
+        #fontSelect option[value="Bilbo Swash Caps"] { font-family: 'Bilbo Swash Caps', cursive; }
+        #fontSelect option[value="Forum"] { font-family: 'Forum', cursive; }
+        #fontSelect option[value="Cinzel"] { font-family: 'Cinzel', serif; }
+        #fontSelect option[value="Gelasio"] { font-family: 'Gelasio', serif; }
+        #fontSelect option[value="Playfair Display"] { font-family: 'Playfair Display', serif; }
+        #fontSelect option[value="Lato"] { font-family: 'Lato', sans-serif; }
+        #fontSelect option[value="Source Sans 3"] { font-family: 'Source Sans 3', sans-serif; }
+        #fontSelect option[value="Cantarell"] { font-family: 'Cantarell', sans-serif; }
+        #fontSelect option[value="Merriweather Sans"] { font-family: 'Merriweather Sans', sans-serif; }
+        #fontSelect option[value="EB Garamond"] { font-family: 'EB Garamond', serif; }
+        #fontSelect option[value="Amethysta"] { font-family: 'Amethysta', serif; }
+        
+        .slider-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .slider-container input[type="range"] {
+            flex: 1;
+        }
+        
+        .slider-value {
+            min-width: 40px;
+            font-weight: bold;
+            color: #8B4513;
+        }
+        
+        .toggle-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #8B4513;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 20px;
+            cursor: pointer;
+            z-index: 1001;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+        
+        .toggle-btn:hover {
+            background: #5b3b34;
+        }
+        
+        .control-panel.hidden {
+            display: none;
+        }
+        
+        .color-input {
+            width: 100%;
+            height: 40px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        .page-break {
+            page-break-after: always;
+        }
+        
+        .page-container {
+            display: flex;
+            gap: 20px;
+            width: 100%;
+            max-width: 100%;
+            margin-bottom: 40px;
+        }
+        
+        .directory-section {
+            flex: 1;
+            max-width: calc(50% - 10px);
+            border: 2px solid #5b3b34;
+            border-radius: 10px;
+            padding: 15px;
+            background-color: #f9f7f4;
+        }
+        
+        .section-header {
+            text-align: center;
+            /* margin-bottom: 15px; */
+            /* border-bottom: 2px solid #8B4513; */
+            /* padding-bottom: 8px; */
+        }
+        
+        .wedding-title {
+            font-size: 24px;
+            color: #8B4513;
+            margin: 0 0 5px 0;
+            font-weight: bold;
+        }
+        
+        .section-subtitle {
+            font-size: 14px;
+            color: #5D4037;
+            margin: 0;
+            font-style: italic;
+        }
+        
+        .guest-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        
+        .guest-table th {
+            background-color: #8B4513;
+            color: white;
+            padding: 8px;
+            text-align: left;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        .guest-table th:nth-child(2) {
+            text-align: center;
+        }
+        
+        .guest-table td {
+            padding: 6px 8px;
+            border-bottom: 1px solid #D7CCC8;
+            font-size: 23px;
+        }
+        
+        .name-cell {
+            color: #3E2723;
+            font-weight: 500;
+        }
+        
+        .guest-table td.table-cell {
+            color: #8B4513;
+            font-weight: bold;
+            text-align: center;
+            font-size: 16px;
+        }
+        
+        .guest-table tr:nth-child(even) {
+            background-color: rgba(255, 255, 255, 0.5);
+        }
+        
+        .guest-table tr:hover {
+            background-color: rgba(139, 69, 19, 0.1);
+        }
+        
+        @media print {
+            .control-panel,
+            .toggle-btn {
+                display: none !important;
+            }
+            
+            body {
+                padding: 0.25in;
+                margin: 0;
+                -webkit-print-color-adjust: exact !important;
+                color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            
+            .page-container {
+                gap: 0.25in;
+                margin-bottom: 0.25in;
+            }
+            
+            .directory-section {
+                padding: 0.15in;
+                break-inside: avoid;
+                -webkit-print-color-adjust: exact !important;
+                color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            
+            .guest-table th {
+                -webkit-print-color-adjust: exact !important;
+                color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            
+            .guest-table td {
+                -webkit-print-color-adjust: exact !important;
+                color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            
+            .name-cell {
+                -webkit-print-color-adjust: exact !important;
+                color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            
+            .table-cell {
+                -webkit-print-color-adjust: exact !important;
+                color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            
+            .page-break {
+                page-break-after: always;
+            }
+        }
+        
+        @page {
+            size: landscape;
+            margin: 0.5in;
+        }
+    </style>
+</head>
+<body>
+    <!-- Control Panel Toggle Button -->
+    <button class="toggle-btn" onclick="toggleControlPanel()">⚙️</button>
+    
+    <!-- Control Panel -->
+    <div class="control-panel" id="controlPanel">
+        <h3>Customize Appearance</h3>
+        
+        <div class="control-group">
+            <label for="fontSelect">Font Family:</label>
+            <div class="font-selector">
+                <div class="font-current font-cormorant" onclick="toggleFontDropdown()">
+                    <span>Cormorant Garamond</span>
+                    <span>▼</span>
+                </div>
+                <div class="font-dropdown" id="fontDropdown">
+                    <div class="font-option font-cormorant selected" data-font="Cormorant Garamond" onclick="selectFont(this)">Cormorant Garamond</div>
+                    <div class="font-option font-birthstone" data-font="Birthstone" onclick="selectFont(this)">Birthstone</div>
+                    <div class="font-option font-whisper" data-font="Whisper" onclick="selectFont(this)">Whisper</div>
+                    <div class="font-option font-great-vibes" data-font="Great Vibes" onclick="selectFont(this)">Great Vibes</div>
+                    <div class="font-option font-caramel" data-font="Caramel" onclick="selectFont(this)">Caramel</div>
+                    <div class="font-option font-montecarlo" data-font="MonteCarlo" onclick="selectFont(this)">MonteCarlo</div>
+                    <div class="font-option font-meie-script" data-font="Meie Script" onclick="selectFont(this)">Meie Script</div>
+                    <div class="font-option font-meow-script" data-font="Meow Script" onclick="selectFont(this)">Meow Script</div>
+                    <div class="font-option font-marck-script" data-font="Marck Script" onclick="selectFont(this)">Marck Script</div>
+                    <div class="font-option font-mr-de-haviland" data-font="Mr De Haviland" onclick="selectFont(this)">Mr De Haviland</div>
+                    <div class="font-option font-explora" data-font="Explora" onclick="selectFont(this)">Explora</div>
+                    <div class="font-option font-bilbo-swash" data-font="Bilbo Swash Caps" onclick="selectFont(this)">Bilbo Swash Caps</div>
+                    <div class="font-option font-forum" data-font="Forum" onclick="selectFont(this)">Forum</div>
+                    <div class="font-option font-cinzel" data-font="Cinzel" onclick="selectFont(this)">Cinzel</div>
+                    <div class="font-option font-gelasio" data-font="Gelasio" onclick="selectFont(this)">Gelasio</div>
+                    <div class="font-option font-playfair" data-font="Playfair Display" onclick="selectFont(this)">Playfair Display</div>
+                    <div class="font-option font-lato" data-font="Lato" onclick="selectFont(this)">Lato</div>
+                    <div class="font-option font-source-sans" data-font="Source Sans 3" onclick="selectFont(this)">Source Sans 3</div>
+                    <div class="font-option font-cantarell" data-font="Cantarell" onclick="selectFont(this)">Cantarell</div>
+                    <div class="font-option font-merriweather-sans" data-font="Merriweather Sans" onclick="selectFont(this)">Merriweather Sans</div>
+                    <div class="font-option font-eb-garamond" data-font="EB Garamond" onclick="selectFont(this)">EB Garamond</div>
+                    <div class="font-option font-amethysta" data-font="Amethysta" onclick="selectFont(this)">Amethysta</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="control-group">
+            <label for="nameFontSize">Guest Name Size:</label>
+            <div class="slider-container">
+                <input type="range" id="nameFontSize" min="10" max="46" value="23" oninput="updateNameFontSize(this.value)">
+                <span class="slider-value" id="nameFontSizeValue">23px</span>
+            </div>
+        </div>
+        
+        <div class="control-group">
+            <label for="tableFontSize">Table Number Size:</label>
+            <div class="slider-container">
+                <input type="range" id="tableFontSize" min="10" max="46" value="16" oninput="updateTableFontSize(this.value)">
+                <span class="slider-value" id="tableFontSizeValue">16px</span>
+            </div>
+        </div>
+        
+        <div class="control-group">
+            <label for="headerFontSize">Header Size:</label>
+            <div class="slider-container">
+                <input type="range" id="headerFontSize" min="10" max="40" value="16" oninput="updateHeaderFontSize(this.value)">
+                <span class="slider-value" id="headerFontSizeValue">16px</span>
+            </div>
+        </div>
+        
+        <div class="control-group">
+            <label for="cellPadding">Cell Padding:</label>
+            <div class="slider-container">
+                <input type="range" id="cellPadding" min="2" max="40" value="6" oninput="updateCellPadding(this.value)">
+                <span class="slider-value" id="cellPaddingValue">6px</span>
+            </div>
+        </div>
+        
+        <div class="control-group">
+            <label for="sectionPadding">Section Padding:</label>
+            <div class="slider-container">
+                <input type="range" id="sectionPadding" min="5" max="40" value="15" oninput="updateSectionPadding(this.value)">
+                <span class="slider-value" id="sectionPaddingValue">15px</span>
+            </div>
+        </div>
+        
+        <div class="control-group">
+            <label for="headerFontSelect">Header Font Family:</label>
+            <div class="font-selector">
+                <div class="font-current font-cormorant" onclick="toggleHeaderFontDropdown()">
+                    <span>Cormorant Garamond</span>
+                    <span>▼</span>
+                </div>
+                <div class="font-dropdown" id="headerFontDropdown">
+                    <div class="font-option font-cormorant selected" data-font="Cormorant Garamond" onclick="selectHeaderFont(this)">Cormorant Garamond</div>
+                    <div class="font-option font-birthstone" data-font="Birthstone" onclick="selectHeaderFont(this)">Birthstone</div>
+                    <div class="font-option font-whisper" data-font="Whisper" onclick="selectHeaderFont(this)">Whisper</div>
+                    <div class="font-option font-great-vibes" data-font="Great Vibes" onclick="selectHeaderFont(this)">Great Vibes</div>
+                    <div class="font-option font-caramel" data-font="Caramel" onclick="selectHeaderFont(this)">Caramel</div>
+                    <div class="font-option font-montecarlo" data-font="MonteCarlo" onclick="selectHeaderFont(this)">MonteCarlo</div>
+                    <div class="font-option font-meie-script" data-font="Meie Script" onclick="selectHeaderFont(this)">Meie Script</div>
+                    <div class="font-option font-meow-script" data-font="Meow Script" onclick="selectHeaderFont(this)">Meow Script</div>
+                    <div class="font-option font-marck-script" data-font="Marck Script" onclick="selectHeaderFont(this)">Marck Script</div>
+                    <div class="font-option font-mr-de-haviland" data-font="Mr De Haviland" onclick="selectHeaderFont(this)">Mr De Haviland</div>
+                    <div class="font-option font-explora" data-font="Explora" onclick="selectHeaderFont(this)">Explora</div>
+                    <div class="font-option font-bilbo-swash" data-font="Bilbo Swash Caps" onclick="selectHeaderFont(this)">Bilbo Swash Caps</div>
+                    <div class="font-option font-forum" data-font="Forum" onclick="selectHeaderFont(this)">Forum</div>
+                    <div class="font-option font-cinzel" data-font="Cinzel" onclick="selectHeaderFont(this)">Cinzel</div>
+                    <div class="font-option font-gelasio" data-font="Gelasio" onclick="selectHeaderFont(this)">Gelasio</div>
+                    <div class="font-option font-playfair" data-font="Playfair Display" onclick="selectHeaderFont(this)">Playfair Display</div>
+                    <div class="font-option font-lato" data-font="Lato" onclick="selectHeaderFont(this)">Lato</div>
+                    <div class="font-option font-source-sans" data-font="Source Sans 3" onclick="selectHeaderFont(this)">Source Sans 3</div>
+                    <div class="font-option font-cantarell" data-font="Cantarell" onclick="selectHeaderFont(this)">Cantarell</div>
+                    <div class="font-option font-merriweather-sans" data-font="Merriweather Sans" onclick="selectHeaderFont(this)">Merriweather Sans</div>
+                    <div class="font-option font-eb-garamond" data-font="EB Garamond" onclick="selectHeaderFont(this)">EB Garamond</div>
+                    <div class="font-option font-amethysta" data-font="Amethysta" onclick="selectHeaderFont(this)">Amethysta</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="control-group">
+            <div class="checkbox-group">
+                <input type="checkbox" id="showHeaders" checked onchange="toggleHeaders(this.checked)">
+                <label for="showHeaders">Display Headers</label>
+            </div>
+        </div>
+        
+        <div class="control-group">
+            <div class="checkbox-group">
+                <input type="checkbox" id="tableBorders" checked onchange="toggleTableBorders(this.checked)">
+                <label for="tableBorders">Table Borders</label>
+            </div>
+        </div>
+        
+        <div class="control-group">
+            <div class="checkbox-group">
+                <input type="checkbox" id="alternateRows" checked onchange="toggleAlternateRows(this.checked)">
+                <label for="alternateRows">Alternate Row Colors</label>
+            </div>
+        </div>
+        
+        <div class="control-group">
+            <label for="rowBorderColor">Row Border Color:</label>
+            <input type="color" id="rowBorderColor" value="#D7CCC8" class="color-input" onchange="updateRowBorderColor(this.value)">
+        </div>
+        
+        <div class="control-group">
+            <label for="borderColor">Section Border Color:</label>
+            <input type="color" id="borderColor" value="#5b3b34" class="color-input" onchange="updateBorderColor(this.value)">
+        </div>
+        
+        <div class="control-group">
+            <label for="headerBgColor">Header Background:</label>
+            <input type="color" id="headerBgColor" value="#8B4513" class="color-input" onchange="updateHeaderBgColor(this.value)">
+        </div>
+        
+        <div class="control-group">
+            <label for="headerTextColor">Header Text Color:</label>
+            <input type="color" id="headerTextColor" value="#ffffff" class="color-input" onchange="updateHeaderTextColor(this.value)">
+        </div>
+        
+        <div class="control-group">
+            <label for="tableBgColor">Table Background:</label>
+            <input type="color" id="tableBgColor" value="#f9f7f4" class="color-input" onchange="updateTableBgColor(this.value)">
+        </div>
+        
+        <div class="control-group">
+            <label for="alternateRowBgColor">Alternate Row Background:</label>
+            <input type="color" id="alternateRowBgColor" value="#ffffff" class="color-input" onchange="updateAlternateRowBgColor(this.value)">
+        </div>
+        
+        <div class="control-group">
+            <label for="alternateRowTextColor">Alternate Row Text Color:</label>
+            <input type="color" id="alternateRowTextColor" value="#3E2723" class="color-input" onchange="updateAlternateRowTextColor(this.value)">
+        </div>
+        
+        <div class="control-group">
+            <label for="nameColor">Name Text Color:</label>
+            <input type="color" id="nameColor" value="#3E2723" class="color-input" onchange="updateNameColor(this.value)">
+        </div>
+        
+        <div class="control-group">
+            <label for="tableColor">Table Number Color:</label>
+            <input type="color" id="tableColor" value="#8B4513" class="color-input" onchange="updateTableColor(this.value)">
+        </div>
+    </div>
+
+    <script>
+        // Google Fonts list with their CSS import names
+        const googleFonts = {
+            'Cormorant Garamond': 'Cormorant+Garamond:ital,wght@0,300..700;1,300..700',
+            'Birthstone': 'Birthstone',
+            'Whisper': 'Whisper',
+            'Great Vibes': 'Great+Vibes',
+            'Caramel': 'Caramel',
+            'MonteCarlo': 'MonteCarlo',
+            'Meie Script': 'Meie+Script',
+            'Meow Script': 'Meow+Script',
+            'Marck Script': 'Marck+Script',
+            'Mr De Haviland': 'Mr+De+Haviland',
+            'Explora': 'Explora',
+            'Bilbo Swash Caps': 'Bilbo+Swash+Caps',
+            'Forum': 'Forum',
+            'Cinzel': 'Cinzel:wght@400;600',
+            'Gelasio': 'Gelasio:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700',
+            'Playfair Display': 'Playfair+Display:ital,wght@0,400..900;1,400..900',
+            'Lato': 'Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900',
+            'Source Sans 3': 'Source+Sans+3:ital,wght@0,200..900;1,200..900',
+            'Cantarell': 'Cantarell:ital,wght@0,400;0,700;1,400;1,700',
+            'Merriweather Sans': 'Merriweather+Sans:ital,wght@0,300..800;1,300..800',
+            'EB Garamond': 'EB+Garamond:ital,wght@0,400..800;1,400..800',
+            'Amethysta': 'Amethysta'
+        };
+        
+        function toggleControlPanel() {
+            const panel = document.getElementById('controlPanel');
+            panel.classList.toggle('hidden');
+        }
+        
+        function toggleFontDropdown() {
+            const dropdown = document.getElementById('fontDropdown');
+            dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+        }
+        
+        function selectFont(element) {
+            const fontName = element.dataset.font;
+            const current = document.querySelector('.font-current span:first-child');
+            const currentElement = document.querySelector('.font-current');
+            
+            // Update current selection display
+            current.textContent = fontName;
+            currentElement.className = 'font-current ' + element.className.split(' ')[1];
+            
+            // Update selected state
+            document.querySelectorAll('.font-option').forEach(opt => opt.classList.remove('selected'));
+            element.classList.add('selected');
+            
+            // Hide dropdown
+            document.getElementById('fontDropdown').style.display = 'none';
+            
+            // Apply font
+            changeFont(fontName);
+        }
+        
+        function changeFont(selectedFont) {
+            if (!selectedFont) {
+                selectedFont = document.querySelector('.font-option.selected').dataset.font;
+            }
+            
+            const fontLink = document.getElementById('google-font-link');
+            
+            if (googleFonts[selectedFont]) {
+                fontLink.href = `https://fonts.googleapis.com/css2?family=${googleFonts[selectedFont]}&display=swap`;
+            }
+            
+            document.body.style.fontFamily = `'${selectedFont}', serif`;
+        }
+        
+        function toggleHeaders(show) {
+            const style = `.guest-table thead { display: ${show ? 'table-header-group' : 'none'} !important; }`;
+            updateStyle('showHeaders', style);
+        }
+        
+        function toggleTableBorders(show) {
+            const style = `.directory-section { border: ${show ? '2px solid #5b3b34' : 'none'} !important; }`;
+            updateStyle('tableBorders', style);
+        }
+        
+        function toggleAlternateRows(enabled) {
+            if (enabled) {
+                const bgColor = document.getElementById('alternateRowBgColor').value;
+                const textColor = document.getElementById('alternateRowTextColor').value;
+                const style = `.guest-table tr:nth-child(even) { background-color: ${bgColor} !important; color: ${textColor} !important; }`;
+                updateStyle('alternateRows', style);
+            } else {
+                updateStyle('alternateRows', '');
+            }
+        }
+        
+        function updateRowBorderColor(value) {
+            const style = `.guest-table td { border-bottom-color: ${value} !important; }`;
+            updateStyle('rowBorderColor', style);
+        }
+        
+        function updateTableBgColor(value) {
+            const style = `.directory-section { background-color: ${value} !important; }`;
+            updateStyle('tableBgColor', style);
+        }
+        
+        function updateAlternateRowBgColor(value) {
+            document.getElementById('alternateRowBgColor').value = value;
+            if (document.getElementById('alternateRows').checked) {
+                toggleAlternateRows(true);
+            }
+        }
+        
+        function updateAlternateRowTextColor(value) {
+            document.getElementById('alternateRowTextColor').value = value;
+            if (document.getElementById('alternateRows').checked) {
+                toggleAlternateRows(true);
+            }
+        }
+        
+        function updateNameFontSize(value) {
+            document.getElementById('nameFontSizeValue').textContent = value + 'px';
+            const style = `.name-cell { font-size: ${value}px !important; }`;
+            updateStyle('nameFontSize', style);
+        }
+        
+        function updateTableFontSize(value) {
+            document.getElementById('tableFontSizeValue').textContent = value + 'px';
+            const style = `.table-cell { font-size: ${value}px !important; }`;
+            updateStyle('tableFontSize', style);
+        }
+        
+        function updateHeaderFontSize(value) {
+            document.getElementById('headerFontSizeValue').textContent = value + 'px';
+            const style = `.guest-table th { font-size: ${value}px !important; }`;
+            updateStyle('headerFontSize', style);
+        }
+        
+        function updateCellPadding(value) {
+            document.getElementById('cellPaddingValue').textContent = value + 'px';
+            const style = `.guest-table td, .guest-table th { padding: ${value}px 8px !important; }`;
+            updateStyle('cellPadding', style);
+        }
+        
+        function updateSectionPadding(value) {
+            document.getElementById('sectionPaddingValue').textContent = value + 'px';
+            const style = `.directory-section { padding: ${value}px !important; }`;
+            updateStyle('sectionPadding', style);
+        }
+        
+        function updateBorderColor(value) {
+            const style = `.directory-section { border-color: ${value} !important; }`;
+            updateStyle('borderColor', style);
+        }
+        
+        function updateHeaderBgColor(value) {
+            const style = `.guest-table th { background-color: ${value} !important; }`;
+            updateStyle('headerBgColor', style);
+        }
+        
+        function updateHeaderTextColor(value) {
+            const style = `.guest-table th { color: ${value} !important; }`;
+            updateStyle('headerTextColor', style);
+        }
+        
+        function updateNameColor(value) {
+            const style = `.name-cell { color: ${value} !important; }`;
+            updateStyle('nameColor', style);
+        }
+        
+        function updateTableColor(value) {
+            const style = `.table-cell { color: ${value} !important; }`;
+            updateStyle('tableColor', style);
+        }
+        
+        function updateStyle(id, css) {
+            // Remove existing style if it exists
+            const existing = document.getElementById(`dynamic-${id}`);
+            if (existing) {
+                existing.remove();
+            }
+            
+            // Add new style
+            const style = document.createElement('style');
+            style.id = `dynamic-${id}`;
+            style.innerHTML = css;
+            document.head.appendChild(style);
+        }
+        
+        // Close font dropdown when clicking outside
+        document.addEventListener('click', function(event) {
+            const fontSelector = document.querySelector('.font-selector');
+            const dropdown = document.getElementById('fontDropdown');
+            const headerFontSelector = document.querySelector('#headerFontDropdown').parentElement;
+            const headerDropdown = document.getElementById('headerFontDropdown');
+            
+            if (!fontSelector.contains(event.target)) {
+                dropdown.style.display = 'none';
+            }
+            
+            if (!headerFontSelector.contains(event.target)) {
+                headerDropdown.style.display = 'none';
+            }
+        });
+        
+        // Initialize control panel as hidden
+        document.addEventListener('DOMContentLoaded', function() {
+            const panel = document.getElementById('controlPanel');
+            panel.classList.add('hidden');
+        });
+        
+        function toggleHeaderFontDropdown() {
+            const dropdown = document.getElementById('headerFontDropdown');
+            dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+        }
+        
+        function selectHeaderFont(element) {
+            const fontName = element.dataset.font;
+            const headerSelector = document.querySelector('#headerFontDropdown').previousElementSibling;
+            const current = headerSelector.querySelector('span:first-child');
+            
+            // Update current selection display
+            current.textContent = fontName;
+            headerSelector.className = 'font-current ' + element.className.split(' ')[1];
+            
+            // Update selected state within header dropdown only
+            document.querySelectorAll('#headerFontDropdown .font-option').forEach(opt => opt.classList.remove('selected'));
+            element.classList.add('selected');
+            
+            // Hide dropdown
+            document.getElementById('headerFontDropdown').style.display = 'none';
+            
+            // Apply font to headers only
+            changeHeaderFont(fontName);
+        }
+        
+        function changeHeaderFont(selectedFont) {
+            if (!selectedFont) {
+                selectedFont = document.querySelector('#headerFontDropdown .font-option.selected').dataset.font;
+            }
+            
+            const style = `.guest-table th { font-family: '${selectedFont}', serif !important; }`;
+            updateStyle('headerFont', style);
+        }
+    </script>
+
+    <!-- Page 1: Sections 1-2 -->
+    <div class="page-container">
+        <div class="directory-section">
+            <div class="section-header">
+                
+               
+            </div>
+            <table class="guest-table">
+                <thead>
+                    <tr>
+                        <th>Guest Name</th>
+                        <th>Table</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td class="name-cell">Michael Abou-Elias</td><td class="table-cell">1</td></tr>
+                    <tr><td class="name-cell">Ibrahim Abu Ali</td><td class="table-cell">5</td></tr>
+                    <tr><td class="name-cell">Lina Andrawus</td><td class="table-cell">10</td></tr>
+                    <tr><td class="name-cell">Salim Andrawus</td><td class="table-cell">10</td></tr>
+                    <tr><td class="name-cell">Heba Awad</td><td class="table-cell">8</td></tr>
+                    <tr><td class="name-cell">Marco Awad</td><td class="table-cell">8</td></tr>
+                    <tr><td class="name-cell">Elias Ayoub</td><td class="table-cell">10</td></tr>
+                    <tr><td class="name-cell">Roula Ayoub</td><td class="table-cell">10</td></tr>
+                    <tr><td class="name-cell">Derek Benner</td><td class="table-cell">20</td></tr>
+                    <tr><td class="name-cell">Morgan Benner</td><td class="table-cell">20</td></tr>
+                    <tr><td class="name-cell">Jake Bernacker</td><td class="table-cell">20</td></tr>
+                    <tr><td class="name-cell">Andrew Boa</td><td class="table-cell">9</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="directory-section">
+            <div class="section-header">
+                
+               
+            </div>
+            <table class="guest-table">
+                <thead>
+                    <tr>
+                        <th>Guest Name</th>
+                        <th>Table</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td class="name-cell">Daniel Bonamo</td><td class="table-cell">12</td></tr>
+                    <tr><td class="name-cell">Jaclyn Bonamo</td><td class="table-cell">12</td></tr>
+                    <tr><td class="name-cell">Natalie Bonamo</td><td class="table-cell">12</td></tr>
+                    <tr><td class="name-cell">Joanne Borrell</td><td class="table-cell">12</td></tr>
+                    <tr><td class="name-cell">John Borrell</td><td class="table-cell">12</td></tr>
+                    <tr><td class="name-cell">Emile Boulos</td><td class="table-cell">1</td></tr>
+                    <tr><td class="name-cell">Joseph Bugliaro</td><td class="table-cell">15</td></tr>
+                    <tr><td class="name-cell">Christy Cabasa</td><td class="table-cell">22</td></tr>
+                    <tr><td class="name-cell">Paul Cabasa</td><td class="table-cell">22</td></tr>
+                    <tr><td class="name-cell">Ashley Cable</td><td class="table-cell">22</td></tr>
+                    <tr><td class="name-cell">Lisa Cacicia</td><td class="table-cell">15</td></tr>
+                    <tr><td class="name-cell">Carlos Charvet</td><td class="table-cell">19</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Page 2: Sections 3-4 -->
+    <div class="page-container">
+        <div class="directory-section">
+            <div class="section-header">
+                
+               
+            </div>
+            <table class="guest-table">
+                <thead>
+                    <tr>
+                        <th>Guest Name</th>
+                        <th>Table</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td class="name-cell">Gema Charvet</td><td class="table-cell">19</td></tr>
+                    <tr><td class="name-cell">Adel Chemaly</td><td class="table-cell">5</td></tr>
+                    <tr><td class="name-cell">Anthony Chemaly</td><td class="table-cell">1</td></tr>
+                    <tr><td class="name-cell">Hana Chemaly</td><td class="table-cell">4</td></tr>
+                    <tr><td class="name-cell">Jonathan Chemaly</td><td class="table-cell">1</td></tr>
+                    <tr><td class="name-cell">Maria Chemaly</td><td class="table-cell">5</td></tr>
+                    <tr><td class="name-cell">Ruvarashe Chimasuro</td><td class="table-cell">21</td></tr>
+                    <tr><td class="name-cell">Malden Comanda</td><td class="table-cell">21</td></tr>
+                    <tr><td class="name-cell">Barb Conway</td><td class="table-cell">3</td></tr>
+                    <tr><td class="name-cell">Beth Conway</td><td class="table-cell">3</td></tr>
+                    <tr><td class="name-cell">Danny Cwiklik</td><td class="table-cell">22</td></tr>
+                    <tr><td class="name-cell">Annet David</td><td class="table-cell">21</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="directory-section">
+            <div class="section-header">
+                
+               
+            </div>
+            <table class="guest-table">
+                <thead>
+                    <tr>
+                        <th>Guest Name</th>
+                        <th>Table</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td class="name-cell">Giulio Dinozzi</td><td class="table-cell">13</td></tr>
+                    <tr><td class="name-cell">Danielle Dooley</td><td class="table-cell">20</td></tr>
+                    <tr><td class="name-cell">Dana Eljouzi</td><td class="table-cell">7</td></tr>
+                    <tr><td class="name-cell">Nabil Eljouzi</td><td class="table-cell">11</td></tr>
+                    <tr><td class="name-cell">Ursula Eljouzi</td><td class="table-cell">11</td></tr>
+                    <tr><td class="name-cell">Robert Ellison</td><td class="table-cell">16</td></tr>
+                    <tr><td class="name-cell">Alphonse Esposito</td><td class="table-cell">19</td></tr>
+                    <tr><td class="name-cell">Ayoub Faddoul</td><td class="table-cell">8</td></tr>
+                    <tr><td class="name-cell">Diana Faddoul</td><td class="table-cell">8</td></tr>
+                    <tr><td class="name-cell">Gabi Faddoul</td><td class="table-cell">6</td></tr>
+                    <tr><td class="name-cell">Georgette Eljouzi Faddoul</td><td class="table-cell">11</td></tr>
+                    <tr><td class="name-cell">Georgette Faddoul</td><td class="table-cell">8</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="page-break"></div>
+
+    <!-- Page 3: Sections 5-6 -->
+    <div class="page-container">
+        <div class="directory-section">
+            <div class="section-header">
+                
+               
+            </div>
+            <table class="guest-table">
+                <thead>
+                    <tr>
+                        <th>Guest Name</th>
+                        <th>Table</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td class="name-cell">Iman Faddoul</td><td class="table-cell">6</td></tr>
+                    <tr><td class="name-cell">Joseph Faddoul</td><td class="table-cell">6</td></tr>
+                    <tr><td class="name-cell">Michael Faddoul</td><td class="table-cell">6</td></tr>
+                    <tr><td class="name-cell">Noha Faddoul</td><td class="table-cell">6</td></tr>
+                    <tr><td class="name-cell">Rita Faddoul</td><td class="table-cell">6</td></tr>
+                    <tr><td class="name-cell">Vanessa Faddoul</td><td class="table-cell">8</td></tr>
+                    <tr><td class="name-cell">Taghreed Faddoul</td><td class="table-cell">6</td></tr>
+                    <tr><td class="name-cell">Kelly Dixon Falk</td><td class="table-cell">22</td></tr>
+                    <tr><td class="name-cell">Alia Faris</td><td class="table-cell">9</td></tr>
+                    <tr><td class="name-cell">Amira Faris</td><td class="table-cell">9</td></tr>
+                    <tr><td class="name-cell">Angela Fincke</td><td class="table-cell">13</td></tr>
+                    <tr><td class="name-cell">Kenneth Fincke</td><td class="table-cell">13</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="directory-section">
+            <div class="section-header">
+                
+               
+            </div>
+            <table class="guest-table">
+                <thead>
+                    <tr>
+                        <th>Guest Name</th>
+                        <th>Table</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td class="name-cell">Eliana Francis</td><td class="table-cell">1</td></tr>
+                    <tr><td class="name-cell">Logan Fritz</td><td class="table-cell">4</td></tr>
+                    <tr><td class="name-cell">Sarah Fritz</td><td class="table-cell">4</td></tr>
+                    <tr><td class="name-cell">Amanda Gambino</td><td class="table-cell">14</td></tr>
+                    <tr><td class="name-cell">Annette Gambino</td><td class="table-cell">13</td></tr>
+                    <tr><td class="name-cell">Frank Gambino</td><td class="table-cell">14</td></tr>
+                    <tr><td class="name-cell">Frankie Gambino</td><td class="table-cell">14</td></tr>
+                    <tr><td class="name-cell">John Gambino</td><td class="table-cell">14</td></tr>
+                    <tr><td class="name-cell">Karen Gambino</td><td class="table-cell">14</td></tr>
+                    <tr><td class="name-cell">Lucia Gambino</td><td class="table-cell">14</td></tr>
+                    <tr><td class="name-cell">Robert Gambino</td><td class="table-cell">15</td></tr>
+                    <tr><td class="name-cell">Dana El Ghazal</td><td class="table-cell">7</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="page-break"></div>
+
+    <!-- Page 4: Sections 7-8 -->
+    <div class="page-container">
+        <div class="directory-section">
+            <div class="section-header">
+                
+               
+            </div>
+            <table class="guest-table">
+                <thead>
+                    <tr>
+                        <th>Guest Name</th>
+                        <th>Table</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td class="name-cell">Yara El Ghazal</td><td class="table-cell">7</td></tr>
+                    <tr><td class="name-cell">Amal Ghazal</td><td class="table-cell">10</td></tr>
+                    <tr><td class="name-cell">Ghassan Ghazal</td><td class="table-cell">11</td></tr>
+                    <tr><td class="name-cell">Hecham Ghazal</td><td class="table-cell">10</td></tr>
+                    <tr><td class="name-cell">Ihsan Ghazal</td><td class="table-cell">10</td></tr>
+                    <tr><td class="name-cell">Issam Ghazal</td><td class="table-cell">10</td></tr>
+                    <tr><td class="name-cell">Jumana Ghazal</td><td class="table-cell">10</td></tr>
+                    <tr><td class="name-cell">Lillian Ghazal</td><td class="table-cell">10</td></tr>
+                    <tr><td class="name-cell">Mona Ghazal</td><td class="table-cell">11</td></tr>
+                    <tr><td class="name-cell">Stephanie Ghazal</td><td class="table-cell">10</td></tr>
+                    <tr><td class="name-cell">William Ghazal</td><td class="table-cell">10</td></tr>
+                    <tr><td class="name-cell">Savannah Gomes</td><td class="table-cell">12</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="directory-section">
+            <div class="section-header">
+                
+               
+            </div>
+            <table class="guest-table">
+                <thead>
+                    <tr>
+                        <th>Guest Name</th>
+                        <th>Table</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td class="name-cell">Sydney Gomes</td><td class="table-cell">12</td></tr>
+                    <tr><td class="name-cell">Christopher Graham</td><td class="table-cell">14</td></tr>
+                    <tr><td class="name-cell">Deanna Graham</td><td class="table-cell">14</td></tr>
+                    <tr><td class="name-cell">Angie Haas</td><td class="table-cell">16</td></tr>
+                    <tr><td class="name-cell">Randy Haas</td><td class="table-cell">16</td></tr>
+                    <tr><td class="name-cell">Rami Haddad</td><td class="table-cell">8</td></tr>
+                    <tr><td class="name-cell">Samar Haddad</td><td class="table-cell">8</td></tr>
+                    <tr><td class="name-cell">Nabil El Haimer</td><td class="table-cell">18</td></tr>
+                    <tr><td class="name-cell">Zaina El Haimer</td><td class="table-cell">18</td></tr>
+                    <tr><td class="name-cell">Fr. George Hajj</td><td class="table-cell">11</td></tr>
+                    <tr><td class="name-cell">Damon Hatten</td><td class="table-cell">16</td></tr>
+                    <tr><td class="name-cell">Erin Hatten</td><td class="table-cell">16</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Page 5: Sections 9-10 -->
+    <div class="page-container">
+        <div class="directory-section">
+            <div class="section-header">
+                
+               
+            </div>
+            <table class="guest-table">
+                <thead>
+                    <tr>
+                        <th>Guest Name</th>
+                        <th>Table</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td class="name-cell">Giancarlo Hernandez</td><td class="table-cell">13</td></tr>
+                    <tr><td class="name-cell">Mustafa Hubaishi</td><td class="table-cell">7</td></tr>
+                    <tr><td class="name-cell">Isabella Humpert</td><td class="table-cell">15</td></tr>
+                    <tr><td class="name-cell">Maximillian Humpert</td><td class="table-cell">15</td></tr>
+                    <tr><td class="name-cell">Mickey Iacono-Walsh</td><td class="table-cell">21</td></tr>
+                    <tr><td class="name-cell">Alaa Ibrahim</td><td class="table-cell">5</td></tr>
+                    <tr><td class="name-cell">Mohammed Ibrahim</td><td class="table-cell">5</td></tr>
+                    <tr><td class="name-cell">Arthur Isber</td><td class="table-cell">9</td></tr>
+                    <tr><td class="name-cell">Carol Isber</td><td class="table-cell">9</td></tr>
+                    <tr><td class="name-cell">Dina Isber</td><td class="table-cell">9</td></tr>
+                    <tr><td class="name-cell">Hadi Isber</td><td class="table-cell">9</td></tr>
+                    <tr><td class="name-cell">Hala Isber</td><td class="table-cell">11</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="directory-section">
+            <div class="section-header">
+                
+               
+            </div>
+            <table class="guest-table">
+                <thead>
+                    <tr>
+                        <th>Guest Name</th>
+                        <th>Table</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td class="name-cell">Jad Isber</td><td class="table-cell">9</td></tr>
+                    <tr><td class="name-cell">Julie Isber</td><td class="table-cell">9</td></tr>
+                    <tr><td class="name-cell">Leo Isber</td><td class="table-cell">2</td></tr>
+                    <tr><td class="name-cell">Lilly Isber</td><td class="table-cell">2</td></tr>
+                    <tr><td class="name-cell">Michael Isber</td><td class="table-cell">2</td></tr>
+                    <tr><td class="name-cell">Ranya Isber</td><td class="table-cell">9</td></tr>
+                    <tr><td class="name-cell">Rose Isber</td><td class="table-cell">9</td></tr>
+                    <tr><td class="name-cell">Shadi Isber</td><td class="table-cell">9</td></tr>
+                    <tr><td class="name-cell">Victoria Isber</td><td class="table-cell">2</td></tr>
+                    <tr><td class="name-cell">Ghassan Issa</td><td class="table-cell">6</td></tr>
+                    <tr><td class="name-cell">Issa Issa</td><td class="table-cell">6</td></tr>
+                    <tr><td class="name-cell">Shaya Jackson</td><td class="table-cell">21</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Page 6: Sections 11-12 -->
+    <div class="page-container">
+        <div class="directory-section">
+            <div class="section-header">
+                
+               
+            </div>
+            <table class="guest-table">
+                <thead>
+                    <tr>
+                        <th>Guest Name</th>
+                        <th>Table</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td class="name-cell">Brad Jimblat</td><td class="table-cell">6</td></tr>
+                    <tr><td class="name-cell">Manal Jimblat</td><td class="table-cell">6</td></tr>
+                    <tr><td class="name-cell">Nemir Jimblat</td><td class="table-cell">6</td></tr>
+                    <tr><td class="name-cell">Nancy Journeay</td><td class="table-cell">16</td></tr>
+                    <tr><td class="name-cell">Sherin Joy</td><td class="table-cell">21</td></tr>
+                    <tr><td class="name-cell">Allison Kelly</td><td class="table-cell">4</td></tr>
+                    <tr><td class="name-cell">Bolos Khalil</td><td class="table-cell">11</td></tr>
+                    <tr><td class="name-cell">Helen Khalil</td><td class="table-cell">11</td></tr>
+                    <tr><td class="name-cell">Claude Khoury</td><td class="table-cell">5</td></tr>
+                    <tr><td class="name-cell">Elie Khoury</td><td class="table-cell">5</td></tr>
+                    <tr><td class="name-cell">Nick Kotsidis</td><td class="table-cell">21</td></tr>
+                    <tr><td class="name-cell">Midhun Kuruvilla</td><td class="table-cell">21</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="directory-section">
+            <div class="section-header">
+                
+               
+            </div>
+            <table class="guest-table">
+                <thead>
+                    <tr>
+                        <th>Guest Name</th>
+                        <th>Table</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td class="name-cell">Layla Lahoud</td><td class="table-cell">4</td></tr>
+                    <tr><td class="name-cell">Benjamin Leorke</td><td class="table-cell">16</td></tr>
+                    <tr><td class="name-cell">Megan Leorke</td><td class="table-cell">16</td></tr>
+                    <tr><td class="name-cell">Anthony Maieron</td><td class="table-cell">4</td></tr>
+                    <tr><td class="name-cell">Jodi Maieron</td><td class="table-cell">4</td></tr>
+                    <tr><td class="name-cell">Mervat Malek</td><td class="table-cell">11</td></tr>
+                    <tr><td class="name-cell">Nada Marcho</td><td class="table-cell">18</td></tr>
+                    <tr><td class="name-cell">Grace Mardirossian</td><td class="table-cell">4</td></tr>
+                    <tr><td class="name-cell">Zayne Matti</td><td class="table-cell">2</td></tr>
+                    <tr><td class="name-cell">Rafik Si Hadj Mohand</td><td class="table-cell">18</td></tr>
+                    <tr><td class="name-cell">Ayush Mohanty</td><td class="table-cell">7</td></tr>
+                    <tr><td class="name-cell">Sara Mohanty</td><td class="table-cell">7</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Page 7: Sections 13-14 -->
+    <div class="page-container">
+        <div class="directory-section">
+            <div class="section-header">
+                
+               
+            </div>
+            <table class="guest-table">
+                <thead>
+                    <tr>
+                        <th>Guest Name</th>
+                        <th>Table</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td class="name-cell">Salwa Morcos</td><td class="table-cell">11</td></tr>
+                    <tr><td class="name-cell">Brittany Morris</td><td class="table-cell">3</td></tr>
+                    <tr><td class="name-cell">Daniel Morris</td><td class="table-cell">3</td></tr>
+                    <tr><td class="name-cell">Don Morris</td><td class="table-cell">3</td></tr>
+                    <tr><td class="name-cell">Eric Morris</td><td class="table-cell">3</td></tr>
+                    <tr><td class="name-cell">Evan Morris</td><td class="table-cell">3</td></tr>
+                    <tr><td class="name-cell">Lara Morris</td><td class="table-cell">7</td></tr>
+                    <tr><td class="name-cell">Maria Morris</td><td class="table-cell">2</td></tr>
+                    <tr><td class="name-cell">Mariam Morris</td><td class="table-cell">3</td></tr>
+                    <tr><td class="name-cell">Paul Morris</td><td class="table-cell">2</td></tr>
+                    <tr><td class="name-cell">Rachel Morris</td><td class="table-cell">3</td></tr>
+                    <tr><td class="name-cell">Ryan Morris</td><td class="table-cell">3</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="directory-section">
+            <div class="section-header">
+                
+               
+            </div>
+            <table class="guest-table">
+                <thead>
+                    <tr>
+                        <th>Guest Name</th>
+                        <th>Table</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td class="name-cell">Sean Morris</td><td class="table-cell">7</td></tr>
+                    <tr><td class="name-cell">Stephen Morris</td><td class="table-cell">19</td></tr>
+                    <tr><td class="name-cell">Vaughn Morris</td><td class="table-cell">2</td></tr>
+                    <tr><td class="name-cell">Mustafa Mukhtar</td><td class="table-cell">18</td></tr>
+                    <tr><td class="name-cell">Sara Mukhtar</td><td class="table-cell">18</td></tr>
+                    <tr><td class="name-cell">Alex Nassif</td><td class="table-cell">4</td></tr>
+                    <tr><td class="name-cell">Christie Nobriga</td><td class="table-cell">19</td></tr>
+                    <tr><td class="name-cell">Deanna Nobriga</td><td class="table-cell">19</td></tr>
+                    <tr><td class="name-cell">Nicholas Nobriga</td><td class="table-cell">19</td></tr>
+                    <tr><td class="name-cell">Kelly Oeder</td><td class="table-cell">16</td></tr>
+                    <tr><td class="name-cell">Carl Panepinto</td><td class="table-cell">12</td></tr>
+                    <tr><td class="name-cell">Paul Panepinto</td><td class="table-cell">12</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Page 8: Sections 15-16 -->
+    <div class="page-container">
+        <div class="directory-section">
+            <div class="section-header">
+                
+               
+            </div>
+            <table class="guest-table">
+                <thead>
+                    <tr>
+                        <th>Guest Name</th>
+                        <th>Table</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td class="name-cell">Pauline Panepinto</td><td class="table-cell">12</td></tr>
+                    <tr><td class="name-cell">Salvatore Panepinto</td><td class="table-cell">12</td></tr>
+                    <tr><td class="name-cell">Aaron Pennix</td><td class="table-cell">17</td></tr>
+                    <tr><td class="name-cell">Audrina Pennix</td><td class="table-cell">17</td></tr>
+                    <tr><td class="name-cell">Drake Pennix</td><td class="table-cell">17</td></tr>
+                    <tr><td class="name-cell">Elianna Pennix</td><td class="table-cell">17</td></tr>
+                    <tr><td class="name-cell">Malachi Pennix</td><td class="table-cell">17</td></tr>
+                    <tr><td class="name-cell">Stephanie Pennix</td><td class="table-cell">17</td></tr>
+                    <tr><td class="name-cell">Michelle Price</td><td class="table-cell">1</td></tr>
+                    <tr><td class="name-cell">Peter Protentis</td><td class="table-cell">15</td></tr>
+                    <tr><td class="name-cell">Dominique Reback</td><td class="table-cell">19</td></tr>
+                    <tr><td class="name-cell">Dan Rist</td><td class="table-cell">20</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="directory-section">
+            <div class="section-header">
+                
+               
+            </div>
+            <table class="guest-table">
+                <thead>
+                    <tr>
+                        <th>Guest Name</th>
+                        <th>Table</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td class="name-cell">SJ Rist</td><td class="table-cell">20</td></tr>
+                    <tr><td class="name-cell">Dominick Romano</td><td class="table-cell">15</td></tr>
+                    <tr><td class="name-cell">Donna Romano</td><td class="table-cell">15</td></tr>
+                    <tr><td class="name-cell">Joseph Romano</td><td class="table-cell">15</td></tr>
+                    <tr><td class="name-cell">Nelli Roth</td><td class="table-cell">7</td></tr>
+                    <tr><td class="name-cell">Aya Roth</td><td class="table-cell">2</td></tr>
+                    <tr><td class="name-cell">Ben Roth</td><td class="table-cell">7</td></tr>
+                    <tr><td class="name-cell">Noah Roth</td><td class="table-cell">2</td></tr>
+                    <tr><td class="name-cell">Nelly Saad</td><td class="table-cell">11</td></tr>
+                    <tr><td class="name-cell">Jehad Saeed</td><td class="table-cell">5</td></tr>
+                    <tr><td class="name-cell">Reema Saeed</td><td class="table-cell">5</td></tr>
+                    <tr><td class="name-cell">Sana Saeed</td><td class="table-cell">5</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Page 9: Sections 17-18 -->
+    <div class="page-container">
+        <div class="directory-section">
+            <div class="section-header">
+                
+               
+            </div>
+            <table class="guest-table">
+                <thead>
+                    <tr>
+                        <th>Guest Name</th>
+                        <th>Table</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td class="name-cell">Janelle Scalmato</td><td class="table-cell">1</td></tr>
+                    <tr><td class="name-cell">Nick Scalmato</td><td class="table-cell">1</td></tr>
+                    <tr><td class="name-cell">David Schmutte</td><td class="table-cell">1</td></tr>
+                    <tr><td class="name-cell">Kerry Scotto</td><td class="table-cell">12</td></tr>
+                    <tr><td class="name-cell">Christina Sexton</td><td class="table-cell">17</td></tr>
+                    <tr><td class="name-cell">Tyler Sexton</td><td class="table-cell">17</td></tr>
+                    <tr><td class="name-cell">Ahmad Shalash</td><td class="table-cell">18</td></tr>
+                    <tr><td class="name-cell">Salwa Shalash</td><td class="table-cell">18</td></tr>
+                    <tr><td class="name-cell">Brink Shinn</td><td class="table-cell">22</td></tr>
+                    <tr><td class="name-cell">Kelly Shinn</td><td class="table-cell">22</td></tr>
+                    <tr><td class="name-cell">Joseph Simone</td><td class="table-cell">13</td></tr>
+                    <tr><td class="name-cell">Nelly Simone</td><td class="table-cell">13</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="directory-section">
+            <div class="section-header">
+                
+               
+            </div>
+            <table class="guest-table">
+                <thead>
+                    <tr>
+                        <th>Guest Name</th>
+                        <th>Table</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td class="name-cell">Charlyn Smalligan</td><td class="table-cell">20</td></tr>
+                    <tr><td class="name-cell">Jamie Smalligan</td><td class="table-cell">20</td></tr>
+                    <tr><td class="name-cell">Kelly Sullivan</td><td class="table-cell">21</td></tr>
+                    <tr><td class="name-cell">Vladimir Tabuteau</td><td class="table-cell">8</td></tr>
+                    <tr><td class="name-cell">Zena Tahhan</td><td class="table-cell">7</td></tr>
+                    <tr><td class="name-cell">Roland Tallant</td><td class="table-cell">16</td></tr>
+                    <tr><td class="name-cell">Harper Taylor</td><td class="table-cell">17</td></tr>
+                    <tr><td class="name-cell">Laura Taylor</td><td class="table-cell">17</td></tr>
+                    <tr><td class="name-cell">Sam Thomason</td><td class="table-cell">20</td></tr>
+                    <tr><td class="name-cell">Shivani Thomason</td><td class="table-cell">20</td></tr>
+                    <tr><td class="name-cell">Salvatore Tornello</td><td class="table-cell">13</td></tr>
+                    <tr><td class="name-cell">Alessia Tremarco</td><td class="table-cell">13</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Page 10: Section 19 (Final Section) -->
+    <div class="page-container">
+        <div class="directory-section">
+            <div class="section-header">
+                
+               
+            </div>
+            <table class="guest-table">
+                <thead>
+                    <tr>
+                        <th>Guest Name</th>
+                        <th>Table</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td class="name-cell">Anthony Tremarco</td><td class="table-cell">13</td></tr>
+                    <tr><td class="name-cell">Giuliana Tremarco</td><td class="table-cell">13</td></tr>
+                    <tr><td class="name-cell">Lisa Tremarco</td><td class="table-cell">13</td></tr>
+                    <tr><td class="name-cell">Nicholas Tuttle</td><td class="table-cell">4</td></tr>
+                    <tr><td class="name-cell">Andrew Velker</td><td class="table-cell">22</td></tr>
+                    <tr><td class="name-cell">Jan Wade</td><td class="table-cell">22</td></tr>
+                    <tr><td class="name-cell">Aaron Weiberg</td><td class="table-cell">22</td></tr>
+                    <tr><td class="name-cell">Gianna Woloshin</td><td class="table-cell">14</td></tr>
+                    <tr><td class="name-cell">Jennifer Woloshin</td><td class="table-cell">14</td></tr>
+                    <tr><td class="name-cell">Zach Woloshin</td><td class="table-cell">14</td></tr>
+                    <tr><td class="name-cell">Danny Yousif</td><td class="table-cell">8</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Empty section for symmetry -->
+        <div class="directory-section" style="visibility: hidden;">
+            <div class="section-header">
+                
+               
+            </div>
+            <table class="guest-table">
+                <thead>
+                    <tr>
+                        <th>Guest Name</th>
+                        <th>Table</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td class="name-cell">&nbsp;</td><td class="table-cell">&nbsp;</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</body>
+</html>
