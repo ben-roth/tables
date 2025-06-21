@@ -673,7 +673,17 @@
                 fontLink.href = `https://fonts.googleapis.com/css2?family=${googleFonts[selectedFont]}&display=swap`;
             }
             
+            // Apply font to body and specific elements
             document.body.style.fontFamily = `'${selectedFont}', serif`;
+            const style = `
+                .name-cell, .table-cell { 
+                    font-family: '${selectedFont}', serif !important; 
+                }
+                .guest-table td {
+                    font-family: '${selectedFont}', serif !important;
+                }
+            `;
+            updateStyle('mainFont', style);
         }
         
         function toggleHeaders(show) {
@@ -723,13 +733,13 @@
         
         function updateNameFontSize(value) {
             document.getElementById('nameFontSizeValue').textContent = value + 'px';
-            const style = `.name-cell { font-size: ${value}px !important; }`;
+            const style = `.name-table-row .name-cell, .name-cell { font-size: ${value}px !important; }`;
             updateStyle('nameFontSize', style);
         }
         
         function updateTableFontSize(value) {
             document.getElementById('tableFontSizeValue').textContent = value + 'px';
-            const style = `.table-cell { font-size: ${value}px !important; }`;
+            const style = `.name-table-row .table-cell, .table-cell { font-size: ${value}px !important; }`;
             updateStyle('tableFontSize', style);
         }
         
