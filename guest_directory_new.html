@@ -18,11 +18,17 @@
 
 .name-table-row {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    white-space: nowrap;
     width: 100%;
     position: relative;
+}
+
+.name-table-row .name-cell {
+    flex-shrink: 0;
+}
+
+.name-table-row .table-cell {
+    flex-shrink: 0;
 }
 
 .name-table-row::before {
